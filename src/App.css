@@ -1,0 +1,38 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* Match MUI theme */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #121212; /* Match MUI dark theme background.default */
+  color: #e0e0e0; /* Default text color for dark theme */
+  position: relative; /* Needed for pseudo-element positioning */
+  overflow-x: hidden; /* Prevent horizontal scroll if noise pattern is too wide */
+}
+
+body::before {
+  content: "";
+  position: fixed; /* Fixed to cover viewport */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><filter id="n" x="0" y="0"><feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100" height="100" filter="url(%23n)" opacity="0.03"/></svg>');
+  background-repeat: repeat;
+  pointer-events: none; /* Make sure it doesn't interfere with interactions */
+  z-index: -1; /* Place it behind all content */
+  opacity: 0.5; /* Adjust opacity for subtlety */
+}
+
+#root {
+  /* Ensures the root element takes up full viewport height for sticky footer */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Add any other global styles you might need */
