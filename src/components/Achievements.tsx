@@ -92,7 +92,7 @@ const Achievements: React.FC = () => {
       </Box>
       <Grid container spacing={5}> {/* Increased spacing */}
         {achievements.map((achievement, index) => (
-          <Grid item xs={12} md={6} key={index}>
+          <Grid xs={12} md={6} key={index}>
             <motion.div // Wrap Card with motion.div
               initial={{ opacity: 0, y: 20 }} // Initial state: invisible and slightly down
               animate={{ opacity: 1, y: 0 }}   // Animate to: fully visible and original position

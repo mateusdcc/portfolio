@@ -1,6 +1,6 @@
 import Achievements from './components/Achievements';
 import HeroBanner from './components/HeroBanner'; // Import HeroBanner
-import { CssBaseline, ThemeProvider, createTheme, Box, Typography, type Theme } from '@mui/material';
+import { CssBaseline, ThemeProvider, createTheme, Box, Typography } from '@mui/material';
 import './App.css';
 
 const theme = createTheme({

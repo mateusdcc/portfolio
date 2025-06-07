@@ -1,7 +1,7 @@
 import React, { Suspense, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Box as DreiBox, Text } from '@react-three/drei';
-import { Box as MuiBox, Typography } from '@mui/material';
+import { Box as MuiBox } from '@mui/material';
 
 const RotatingBox = () => {
   const meshRef = useRef<THREE.Mesh>(null!);
