@@ -3,11 +3,12 @@ import {
   Container, 
   Typography, 
   Box, 
-  Grid, 
+  // Grid, // No longer using Grid container for Masonry items
   Card, 
   CardContent, 
   Button 
 } from '@mui/material';
+import Masonry from '@mui/lab/Masonry';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkIcon from '@mui/icons-material/Link';
 import { motion } from 'framer-motion'; // Import motion
@@ -23,6 +24,49 @@ import {
   arrow
 } from '@floating-ui/react';
 import { useRef as useFloatingRef } from 'react'; // Alias to avoid conflict with React.useRef
+import Chip from '@mui/material/Chip';
+import CodeIcon from '@mui/icons-material/Code';
+import StorageIcon from '@mui/icons-material/Storage';
+import WebIcon from '@mui/icons-material/Web';
+import BuildIcon from '@mui/icons-material/Build';
+import PaletteIcon from '@mui/icons-material/Palette';
+import SchoolIcon from '@mui/icons-material/School'; // For education/learning related
+import ArticleIcon from '@mui/icons-material/Article'; // For writing/docs
+import FunctionsIcon from '@mui/icons-material/Functions'; // For combinatorics/algorithms
+
+// Tech Styling Configuration
+const techStylingMap: { [key: string]: { icon: React.ReactElement, color: string, tooltipText: string } } = {
+  'JavaScript': { icon: <CodeIcon />, color: '#f0db4f', tooltipText: 'A dynamic, high-level programming language.' },
+  'HTML': { icon: <CodeIcon />, color: '#e34c26', tooltipText: 'The standard markup language for web pages.' },
+  'CSS': { icon: <CodeIcon />, color: '#264de4', tooltipText: 'A stylesheet language for describing web page presentation.' },
+  'Nix': { icon: <BuildIcon />, color: '#5277c3', tooltipText: 'A powerful package manager and build system.' },
+  'Linux': { icon: <StorageIcon />, color: '#fcc100', tooltipText: 'An open-source Unix-like operating system kernel.' },
+  'System Analysis': { icon: <WebIcon />, color: '#4caf50', tooltipText: 'Analyzing systems to identify goals and create efficient solutions.' },
+  'Business Process': { icon: <WebIcon />, color: '#009688', tooltipText: 'A collection of linked tasks delivering a service or product.' },
+  'TypeScript': { icon: <CodeIcon />, color: '#3178c6', tooltipText: 'A typed superset of JavaScript that compiles to plain JavaScript.' },
+  'Syntax Parsing': { icon: <CodeIcon />, color: '#9c27b0', tooltipText: 'Analyzing symbol strings according to formal grammar rules.' },
+  'Rendering Engines': { icon: <PaletteIcon />, color: '#ff9800', tooltipText: 'Software that draws text and images on the screen.' },
+  'Rust': { icon: <CodeIcon />, color: '#dea584', tooltipText: 'A systems programming language focused on safety and speed.' },
+  'Algorithms': { icon: <FunctionsIcon />, color: '#673ab7', tooltipText: 'A finite sequence of well-defined, computer-implementable instructions.' },
+  'Game Development': { icon: <WebIcon />, color: '#f44336', tooltipText: 'The art of creating games, from design to release.' },
+  'Digital Systems': { icon: <BuildIcon />, color: '#2196f3', tooltipText: 'Systems that use discrete (discontinuous) values.' },
+  'Microcontrollers': { icon: <BuildIcon />, color: '#03a9f4', tooltipText: 'Small computers on a single integrated circuit.' },
+  'Microprocessors': { icon: <BuildIcon />, color: '#00bcd4', tooltipText: 'The central processing unit (CPU) of a computer system.' },
+  'Assembly': { icon: <CodeIcon />, color: '#757575', tooltipText: 'A low-level symbolic code converted by an assembler.' },
+  'C': { icon: <CodeIcon />, color: '#a8b9cc', tooltipText: 'A general-purpose, procedural computer programming language.' },
+  'LaTeX': { icon: <ArticleIcon />, color: '#008080', tooltipText: 'A software system for high-quality document preparation.' },
+  'Python': { icon: <CodeIcon />, color: '#3572A5', tooltipText: 'An interpreted, high-level, general-purpose programming language.' },
+  'Technical Writing': { icon: <ArticleIcon />, color: '#795548', tooltipText: 'Writing that requires direction, instruction, or explanation.' },
+  'Combinatorics': { icon: <FunctionsIcon />, color: '#ffc107', tooltipText: 'An area of mathematics concerned with counting and finite structures.' }
+};
+
+const defaultTechStyle = { icon: <CodeIcon />, color: '#607d8b', tooltipText: 'A technology used in various projects.' };
+
+const getTechStyling = (techName: string) => {
+  const specificStyle = techStylingMap[techName];
+  if (specificStyle) return specificStyle;
+  return { ...defaultTechStyle, tooltipText: `${techName}: ${defaultTechStyle.tooltipText}` };
+};
 
 interface Achievement {
   title: string;
@@ -37,6 +81,20 @@ interface Achievement {
 
 const achievements: Achievement[] = [
   {
+    title: 'Technician in Electronics',
+    description: 'Completed a comprehensive technician course in electronics at CEFET-MG, with three modules focusing on digital systems, microcontrollers, microprocessors, Assembly, and C programming.',
+    date: '2025',
+    links: {},
+    technologies: ['Digital Systems', 'Microcontrollers', 'Microprocessors', 'Assembly', 'C']
+  },
+  {
+    title: 'LaTeX Expertise & Book Contribution',
+    description: 'Extensive experience with LaTeX, including multiple commissions. Co-authored the programming section of a book on Combinatorics with Python Programming for professors at CEFET-MG (to be published in 2026).',
+    date: 'Book forthcoming 2026',
+    links: {},
+    technologies: ['LaTeX', 'Python', 'Technical Writing', 'Combinatorics']
+  },
+  {
     title: 'Second Place in Orange Juice Hackathon',
     description: 'Awarded second place in a hackathon organized by Orange Juice, a leading Brazilian company. Developed Anote, a JavaScript-based project that showcases innovative solutions.',
     date: '2025',
@@ -49,7 +107,7 @@ const achievements: Achievement[] = [
   {
     title: 'Server Configuration Automation',
     description: 'Implemented server configuration automation using Nix language, streamlining deployment processes and ensuring consistent environments across different systems.',
-    date: '2025',
+    date: '2023',
     links: {},
     technologies: ['Nix', 'Linux']
   },
@@ -65,7 +123,7 @@ const achievements: Achievement[] = [
   {
     title: 'Obsidian Plugin Development',
     description: 'Contributed to the Obsidian ecosystem by developing and improving several plugins, including Header Referencer, Desmos Improved, and Highlightr Plugin.',
-    date: '2025',
+    date: '2024',
     links: {
       github: 'https://github.com/mateusdcc/obsidian-header-referencer'
     },
@@ -74,7 +132,7 @@ const achievements: Achievement[] = [
   {
     title: 'Wordle Algorithm Implementation',
     description: 'Created a Rust crate implementing the Wordle game logic, which gained significant traction in the Rust community with over 4.5k downloads.',
-    date: '2025',
+    date: '2023',
     links: {
       github: 'https://crates.io/crates/wordlea'
     },
@@ -90,13 +148,25 @@ const Achievements: React.FC = () => {
           Achievements
         </Typography>
       </Box>
-      <Grid container spacing={5}> {/* Increased spacing */}
+
+      {/* Highlights Section */}
+      <Box sx={{ textAlign: 'center', mb: 6, py: 3, backgroundColor: 'rgba(0,0,0,0.15)', borderRadius: 2, boxShadow: 'inset 0 0 10px rgba(0,0,0,0.3)' }}>
+        <Typography variant="h5" component="h2" gutterBottom sx={{ color: 'text.primary', fontWeight: 'medium' }}>
+          My Tech Stack Highlights
+        </Typography>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 1, mt: 2, px:2 }}>
+          {Array.from(new Set(achievements.flatMap(ach => ach.technologies))).sort().map((tech) => (
+            <TechnologyTag key={tech} techName={tech} />
+          ))}
+        </Box>
+      </Box>
+      <Masonry columns={{ xs: 1, sm: 2, md: 3 }} spacing={4} sx={{ mt: 0 }}>
         {achievements.map((achievement, index) => (
-          <Grid xs={12} md={6} key={index}>
-            <motion.div // Wrap Card with motion.div
-              initial={{ opacity: 0, y: 20 }} // Initial state: invisible and slightly down
-              animate={{ opacity: 1, y: 0 }}   // Animate to: fully visible and original position
-              transition={{ duration: 0.5, delay: index * 0.1 }} // Animation duration and delay per card
+            <motion.div 
+              key={index} 
+              initial={{ opacity: 0, y: 20 }} 
+              animate={{ opacity: 1, y: 0 }}   
+              transition={{ duration: 0.5, delay: index * 0.1 }} 
             >
               <Card sx={{
               width: '100%',
@@ -171,10 +241,9 @@ const Achievements: React.FC = () => {
                 </Box>
               </CardContent>
             </Card>
-            </motion.div> {/* Close motion.div */}
-          </Grid>
+            </motion.div> 
         ))}
-      </Grid>
+      </Masonry>
     </Container>
   );
 };
@@ -183,6 +252,7 @@ const Achievements: React.FC = () => {
 const TechnologyTag: React.FC<{ techName: string }> = ({ techName }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const arrowRef = useFloatingRef<SVGSVGElement>(null);
+  const styleInfo = getTechStyling(techName);
 
   const { refs, floatingStyles, context } = useFloating({
     open: isOpen,
@@ -204,23 +274,30 @@ const TechnologyTag: React.FC<{ techName: string }> = ({ techName }) => {
 
   return (
     <>
-      <Box
+      <Chip
         ref={refs.setReference}
         {...getReferenceProps()}
-        component="span"
+        icon={React.cloneElement(styleInfo.icon, { sx: { color: (theme) => theme.palette.getContrastText(styleInfo.color) + ' !important' } })}
+        label={techName}
+        size="small"
         sx={{
-          bgcolor: 'secondary.dark',
-          color: 'white',
-          py: 0.5,
-          px: 1,
-          borderRadius: 1,
-          fontSize: '0.75rem',
-          fontWeight: 'medium',
+          backgroundColor: styleInfo.color,
+          color: (theme) => theme.palette.getContrastText(styleInfo.color),
+          m: 0.5, // Margin around each chip
           cursor: 'default',
+          fontWeight: 'medium',
+          transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+          '&:hover': {
+            transform: 'translateY(-2px)',
+            boxShadow: (theme) => `0 4px 8px ${theme.palette.action.disabled}`,
+          },
+          '& .MuiChip-icon': {
+            color: (theme) => theme.palette.getContrastText(styleInfo.color) + ' !important',
+            marginLeft: '8px', // Adjust icon margin if needed
+            marginRight: '-4px'
+          }
         }}
-      >
-        {techName}
-      </Box>
+      />
       {isOpen && (
         <FloatingPortal>
           <Box
@@ -228,35 +305,36 @@ const TechnologyTag: React.FC<{ techName: string }> = ({ techName }) => {
             style={floatingStyles}
             {...getFloatingProps()}
             sx={{
-              background: 'background.paper',
+              backgroundColor: (theme) => theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[300], // Darker for dark, lighter for light
               color: 'text.primary',
-              p: 1,
+              p: 1.5,
               borderRadius: 1,
-              boxShadow: 3,
-              fontSize: '0.8rem',
-              zIndex: 1300, // Ensure tooltip is above other elements
+              boxShadow: 6, // Increased shadow for better visibility
+              zIndex: 1301, // Ensure tooltip is above other elements
               border: '1px solid rgba(255, 255, 255, 0.2)',
+              maxWidth: '300px',
             }}
           >
-            {techName} {/* Simple tooltip content for now */}
-            <Box
-              component="svg"
+            <svg
               ref={arrowRef}
-              width={8}
-              height={8}
-              viewBox="0 0 8 8"
-              sx={{
+              width="16"
+              height="8"
+              viewBox="0 0 16 8"
+              style={{
                 position: 'absolute',
+                left: context.middlewareData.arrow?.x,
+                top: context.middlewareData.arrow?.y,
                 fill: 'background.paper',
                 stroke: 'rgba(255, 255, 255, 0.2)',
                 strokeWidth: 1,
-                left: context.middlewareData.arrow?.x,
-                top: context.middlewareData.arrow?.y,
-                [context.placement.split('-')[0] as string]: '-8px',
               }}
             >
-              <path d="M0 0 L4 4 L8 0 Z" />
-            </Box>
+              <path d="M0 8 L8 0 L16 8 Z" />
+            </svg>
+            <Typography variant="body1" sx={{ fontWeight: 'bold', color: styleInfo.color, mb: 0.5 }}>{techName}</Typography>
+            <Typography variant="body2">
+              {styleInfo.tooltipText}
+            </Typography>
           </Box>
         </FloatingPortal>
       )}
